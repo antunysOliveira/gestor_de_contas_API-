@@ -11,18 +11,24 @@ const sequelize = new Sequelize(
         dialect: "mysql",
         dialectModule: mysql2,
         logging: false,
-        pool: { max: 5, min: 0, idle: 30000, acquire: 10000 }
+        pool: { 
+            max: 5, 
+            min: 0, 
+            idle: 30000, 
+            acquire: 10000 
+        },
+
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
     }
 );
-// 2. Criar o objeto 'db'
-const db = {};
 
-// 3. Adicionar as instâncias ao objeto 'db'
+const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// 4. (REMOVIDO DAQUI) A linha 'db.sequelize.sync()' que estava causando o erro.
-//    Nós vamos movê-la para o app.js
-
-// 5. Exportar o objeto 'db' para outros arquivos (como User.js) usarem
 module.exports = db;
