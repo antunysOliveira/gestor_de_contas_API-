@@ -5,30 +5,35 @@ const bcrypt = require('bcryptjs');
 module.exports = {
 
     async register(req, res) {
-        const { email, password } = req.body;
+        const { email, password, telefone } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+        if (!email || !password || !telefone) {
+            return res.status(400).json({ error: 'Email, senha e telefone são obrigatórios' });
         }
 
         try {
             const userExists = await User.findOne({ where: { email } });
-
             if (userExists) {
                 return res.status(400).json({ error: 'Este email já está em uso' });
             }
 
             const newUser = await User.create({
                 email,
-                password
+                password,
+                telefone
             });
 
             return res.status(201).json({
                 id: newUser.id,
-                email: newUser.email
+                email: newUser.email,
+                telefone: newUser.telefone
             });
 
         } catch (err) {
+            if (err.name === 'SequelizeDatabaseError' && err.original.code === 'ER_BAD_FIELD_ERROR') {
+                 console.error('Erro de banco: A coluna "telefone" não existe na tabela "Users".');
+                 return res.status(500).json({ error: 'Erro de configuração do servidor.' });
+            }
             console.error(err);
             return res.status(500).json({ error: 'Erro ao registrar usuário' });
         }
@@ -42,7 +47,10 @@ module.exports = {
         }
 
         try {
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne({
+                where: { email },
+                attributes: ['id', 'email', 'password'] 
+            });
 
             if (!user) {
                 return res.status(401).json({ error: 'Email ou senha inválidos' });
@@ -76,7 +84,10 @@ module.exports = {
         }
 
         try {
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne({
+                where: { email },
+                attributes: ['id', 'telefone', 'password']
+            });
 
             if (!user) {
                 return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -92,6 +103,10 @@ module.exports = {
             return res.status(200).json({ message: 'Senha alterada com sucesso.' });
 
         } catch (err) {
+            if (err.name === 'SequelizeDatabaseError' && err.original.code === 'ER_BAD_FIELD_ERROR') {
+                 console.error('Erro de banco: A coluna "telefone" não existe na tabela "Users".');
+                 return res.status(500).json({ error: 'Erro de configuração do servidor.' });
+            }
             console.error(err);
             return res.status(500).json({ error: 'Erro ao alterar senha' });
         }
