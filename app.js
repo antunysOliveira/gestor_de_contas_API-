@@ -4,13 +4,9 @@ const cors = require("cors");
 require('dotenv').config();
 
 app.use(cors()); 
-
-const allRoutes = require('./routes');
-app.use(allRoutes);
+app.use(express.json());
 
 const db = require('./models/db'); 
-
-app.use(express.json());
 
 const allRoutes = require('./routes');
 app.use(allRoutes);
