@@ -3,10 +3,10 @@ const app = express();
 const cors = require("cors");
 require('dotenv').config();
 
-app.use(cors()); 
+app.use(cors());
 app.use(express.json());
 
-const db = require('./models/db'); 
+const db = require('./models/db');
 
 const allRoutes = require('./routes');
 app.use(allRoutes);
@@ -20,8 +20,8 @@ const PORT = process.env.PORT || 8081;
 db.sequelize.sync()
     .then(() => {
         console.log("Banco de dados sincronizado com sucesso.");
-        
-        app.listen(PORT, function () {
+
+        app.listen(PORT, '0.0.0.0', function () {
             console.log(`API iniciada com sucesso em http://localhost:${PORT}`);
         });
     })
