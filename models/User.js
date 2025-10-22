@@ -9,6 +9,10 @@ const User = db.sequelize.define('User', {
         autoIncrement: true,
         allowNull: false
     },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false // Obrigatório, como na sua validação
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,

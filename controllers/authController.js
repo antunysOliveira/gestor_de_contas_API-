@@ -5,10 +5,10 @@ const bcrypt = require('bcryptjs');
 module.exports = {
 
     async register(req, res) {
-        const { email, password } = req.body;
+        const { email, password, name } = req.body;
 
-        if (!email || !password ) {
-            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+        if (!email || !password || !name ) {
+            return res.status(400).json({ error: 'Nome, Email e senha são obrigatórios' });
         }
 
         try {
@@ -20,11 +20,13 @@ module.exports = {
             const newUser = await User.create({
                 email,
                 password,
+                name
             });
 
             return res.status(201).json({
                 id: newUser.id,
                 email: newUser.email,
+                name: newUser.name,
             });
 
         } catch (err) {
