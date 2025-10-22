@@ -5,10 +5,10 @@ const bcrypt = require('bcryptjs');
 module.exports = {
 
     async register(req, res) {
-        const { email, password, telefone } = req.body;
+        const { email, password } = req.body;
 
-        if (!email || !password || !telefone) {
-            return res.status(400).json({ error: 'Email, senha e telefone são obrigatórios' });
+        if (!email || !password ) {
+            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
         }
 
         try {
@@ -20,18 +20,15 @@ module.exports = {
             const newUser = await User.create({
                 email,
                 password,
-                telefone
             });
 
             return res.status(201).json({
                 id: newUser.id,
                 email: newUser.email,
-                telefone: newUser.telefone
             });
 
         } catch (err) {
             if (err.name === 'SequelizeDatabaseError' && err.original.code === 'ER_BAD_FIELD_ERROR') {
-                 console.error('Erro de banco: A coluna "telefone" não existe na tabela "Users".');
                  return res.status(500).json({ error: 'Erro de configuração do servidor.' });
             }
             console.error(err);
@@ -76,39 +73,39 @@ module.exports = {
         }
     },
 
-    async recoverPassword(req, res) {
-        const { email, telefone, novaSenha } = req.body;
+    // async recoverPassword(req, res) {
+    //     const { email, telefone, novaSenha } = req.body;
 
-        if (!email || !telefone || !novaSenha) {
-            return res.status(400).json({ error: 'Email, telefone e a nova senha são obrigatórios' });
-        }
+    //     if (!email || !novaSenha) {
+    //         return res.status(400).json({ error: 'Email, telefone e a nova senha são obrigatórios' });
+    //     }
 
-        try {
-            const user = await User.findOne({
-                where: { email },
-                attributes: ['id', 'telefone', 'password']
-            });
+    //     try {
+    //         const user = await User.findOne({
+    //             where: { email },
+    //             attributes: ['id', 'password']
+    //         });
 
-            if (!user) {
-                return res.status(404).json({ error: 'Usuário não encontrado' });
-            }
+    //         if (!user) {
+    //             return res.status(404).json({ error: 'Usuário não encontrado' });
+    //         }
 
-            if (user.telefone !== telefone) {
-                return res.status(403).json({ error: 'Dados de recuperação inválidos' });
-            }
+    //         if (user.telefone !== telefone) {
+    //             return res.status(403).json({ error: 'Dados de recuperação inválidos' });
+    //         }
 
-            user.password = novaSenha;
-            await user.save();
+    //         user.password = novaSenha;
+    //         await user.save();
 
-            return res.status(200).json({ message: 'Senha alterada com sucesso.' });
+    //         return res.status(200).json({ message: 'Senha alterada com sucesso.' });
 
-        } catch (err) {
-            if (err.name === 'SequelizeDatabaseError' && err.original.code === 'ER_BAD_FIELD_ERROR') {
-                 console.error('Erro de banco: A coluna "telefone" não existe na tabela "Users".');
-                 return res.status(500).json({ error: 'Erro de configuração do servidor.' });
-            }
-            console.error(err);
-            return res.status(500).json({ error: 'Erro ao alterar senha' });
-        }
-    }
+    //     } catch (err) {
+    //         if (err.name === 'SequelizeDatabaseError' && err.original.code === 'ER_BAD_FIELD_ERROR') {
+    //              console.error('Erro de banco: A coluna "telefone" não existe na tabela "Users".');
+    //              return res.status(500).json({ error: 'Erro de configuração do servidor.' });
+    //         }
+    //         console.error(err);
+    //         return res.status(500).json({ error: 'Erro ao alterar senha' });
+    //     }
+    // }
 };

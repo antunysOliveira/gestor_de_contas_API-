@@ -21,10 +21,15 @@ const User = db.sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    telefone: {
-        type: DataTypes.STRING,
-        allowNull: false
+    resetPasswordToken: {
+      type: DataTypes.STRING,
+      allowNull: true 
+    },
+    resetPasswordExpires: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
+
 }, {
     hooks: {
         beforeCreate: async (user) => {
