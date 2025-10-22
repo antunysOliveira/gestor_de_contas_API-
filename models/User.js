@@ -11,7 +11,7 @@ const User = db.sequelize.define('User', {
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false // Obrigatório, como na sua validação
+        allowNull: false
     },
     email: {
         type: DataTypes.STRING,
