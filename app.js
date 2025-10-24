@@ -10,10 +10,10 @@ const db = require('./models/db');
 const allRoutes = require('./routes');
 app.use(allRoutes);
 
-app.get("/", function (res) {
+app.get("/", function (res) { 
     res.send("API de Controle Financeiro no ar!");
 });
-
+// ! teste
 const PORT = process.env.PORT || 8081;
 
 db.sequelize.sync()
