@@ -16,7 +16,7 @@ app.get("/", function (req, res) {
 
 const PORT = process.env.PORT || 8081;
 
-db.sequelize.sync({ alter: true })
+db.sequelize.sync()
     .then(() => {
         console.log("Banco de dados sincronizado com sucesso.");
 
