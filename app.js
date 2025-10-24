@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +16,7 @@ app.get("/", function (req, res) {
 
 const PORT = process.env.PORT || 8081;
 
-db.sequelize.sync()
+db.sequelize.sync({ alter: true })
     .then(() => {
         console.log("Banco de dados sincronizado com sucesso.");
 

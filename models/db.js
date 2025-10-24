@@ -31,13 +31,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-console.log("Iniciando sincronização com o banco de dados...");
-db.sequelize.sync({ alter: true })
-    .then(() => {
-        console.log("✅ Banco de dados sincronizado com sucesso (alter: true).");
-    })
-    .catch((err) => {
-        console.error("❌ Erro ao sincronizar o banco de dados:", err);
-    });
+// console.log("Iniciando sincronização com o banco de dados...");
+// db.sequelize.sync({ alter: true })
+//     .then(() => {
+//         console.log("✅ Banco de dados sincronizado com sucesso (alter: true).");
+//     })
+//     .catch((err) => {
+//         console.error("❌ Erro ao sincronizar o banco de dados:", err);
+//     });
 
 module.exports = db;
