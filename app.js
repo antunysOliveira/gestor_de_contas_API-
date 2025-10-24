@@ -10,7 +10,7 @@ const db = require('./models/db');
 const allRoutes = require('./routes');
 app.use(allRoutes);
 
-app.get("/", function (req, res) {
+app.get("/", function (res) {
     res.send("API de Controle Financeiro no ar!");
 });
 
